@@ -1,0 +1,153 @@
+import random
+from tkinter import *
+ 
+window = Tk()
+window.title("Quiz")
+window.geometry("600x450")
+window.configure(bg = '#EED1D7')
+ 
+questions = [["WHo is known as the lady of the lamp?","Lakshmi Bai","Indira Gandhi","Sarojini Naidu","Florence Nightingale"]]
+questions.append(["Which is city is known as Garden city of India?","Hyderabad","chennai","Mumbai","Bangalore"])
+questions.append(["Where did sushi originate?","Paris","India","China","Japan"])
+questions.append(["What is the most common surname in united states?","Williams","White","Rogers","Smith"])
+questions.append(["What country drinks most coffee per capita?","Thailand","Norway","Netherlands","Finland"])
+questions.append(["Which city is known as THE ETERNAL CITY?","Germany","Spain","Italy","Rome"])
+questions.append(["According to an American writer, life is short to  learn which language?","Spanish","Korean","French","German"])
+questions.append(["A snail can sleep for how long?","3 days","3 months","6 months","3years"])
+questions.append(["Which country is the origin of French Fries?","France","Georgia","Japan","Belgium"])
+questions.append(["What is cynophobia?","Fear of cats","Fear of elephants","Fear of colours","Fear of dogs"])
+questions.append(["Which animal can be seen on the Porsche logo?","Lion","Deer","Wolf","Horse"])
+questions.append(["How many notes are present in a standard piano?","80","79","86","88"])
+questions.append(["What is the highest grossing movie?","Avengers - End game","Avengers - Infinity war","Titanic","Avatar"])
+questions.append(["Which planet shares its name with a dog?","Venus","Saturn","Mars","Pluto"])
+def clear():
+    list = window.grid_slaves()
+    for n in list:
+        n.destroy()
+ 
+class Quiz:
+    def __init__(self,quest):
+        clear()
+        self.Ques= []
+        for n in quest:
+            self.Ques.append(n)
+        self.a1=""
+        self.a2=""
+        self.a3=""
+        self.a4=""
+        self.selected=""
+        self.Correct = Button(window, text="",font=("Arial",14))
+        self.op1 = Button(window, text="",font=("Arial",14))
+        self.op2 = Button(window, text="",font=("Arial",14))
+        self.op3 = Button(window, text="",font=("Arial",14))
+        self.op4 = Button(window, text="",font=("Arial",14))
+        self.lock=False
+        self.right=0
+        self.next = Button(window,text="NEXT",bg = '#B7B2A4',font=("Cooper Black",14),command=self.Que)
+        self.nummer=0
+        self.Max=5
+        self.Que()
+    def Que(self):
+        self.next.grid(column=0,row=5,pady=5)
+        if len(self.Ques) > 0 and self.nummer < self.Max:
+            self.nummer += 1
+            self.lock = False
+            randNum = random.randint(0,len(self.Ques)-1)
+            QuesText = self.Ques[randNum][0]
+            self.selected = self.Ques[randNum][-1]
+            answers = []
+            for i in range(1,5):
+                answers.append(self.Ques[randNum][i])
+            random.shuffle(answers)
+ 
+            self.a1 = answers[0]
+            self.a2 = answers[1]
+            self.a3 = answers[2]
+            self.a4 = answers[3]
+ 
+            Que = Text(window, font=("Arial", 14), width=40, height=2,bg = '#CACDCD')
+            Que.insert(END,QuesText)
+            Que.grid(column=0,row=0,padx=80,pady=(75,0))
+ 
+            self.op1 = Button(window, text=self.a1, font=("Arial",14),width=39, bg = '#E1DCC9',command = self.control1)
+            self.op2 = Button(window, text=self.a2, font=("Arial",14),width=39,bg = '#E1DCC9', command = self.control2)
+            self.op3 = Button(window, text=self.a3, font=("Arial",14),width=39,bg = '#E1DCC9',command = self.control3)
+            self.op4 = Button(window, text=self.a4, font=("Arial",14),width=39,bg = '#E1DCC9', command = self.control4)
+ 
+            self.op1.grid(column=0,row=1,pady=(8,5))
+            self.op2.grid(column=0,row=2,pady=5)
+            self.op3.grid(column=0,row=3,pady=5)
+            self.op4.grid(column=0,row=4,pady=5)
+ 
+            if self.a1 == self.selected:
+                self.Correct = self.op1
+            elif self.a2 == self.selected:
+                self.Correct = self.op2
+            elif self.a3 == self.selected:
+                self.Correct = self.op3
+            elif self.a4 == self.selected:
+                self.Correct = self.op4
+            self.Ques.pop(randNum)
+        else:
+            clear()
+            lb = Label(window, text="YOUR SCORE IS " + str(self.right) + " OUT OF " + str(self.Max) ,font=("Arial",14),bg = '#B7B2A4')
+            lb.grid(column=0,row=0,padx=120,pady=(170,10))
+            zumMenu = Button(window, text="PLAY AGAIN",font=("Cooper Black",15),bg = '#BFD0B0',activebackground = '#8EDBE3',command=menuCreator)
+            zumMenu.grid(column=0,row=1)
+ 
+    def control1(self):
+        if self.lock == False:
+            if self.selected != self.a1:
+                self.op1.configure(bg="#FF5B71")
+            else:
+                self.op1.configure(bg="#B9FF92")
+                self.right += 1
+            self.Correct.configure(bg="#B9FF92")
+            self.lock = True
+ 
+    def control2(self):
+        if self.lock == False:
+            if self.selected != self.a2:
+                self.op2.configure(bg="#FF5B71")
+            else:
+                self.op2.configure(bg="#B9FF92")
+                self.right += 1
+            self.Correct.configure(bg="#B9FF92")
+            self.lock = True
+ 
+    def control3(self):
+        if self.lock == False:
+            if self.selected != self.a3:
+                self.op3.configure(bg="#FF5B71")
+            else:
+                self.op3.configure(bg="#B9FF92")
+                self.right += 1
+            self.Correct.configure(bg="#B9FF92")
+            self.lock = True
+ 
+    def control4(self):
+        if self.lock == False:
+            if self.selected != self.a4:
+                self.op4.configure(bg="#FF5B71")
+            else:
+                self.op4.configure(bg="#B9FF92")
+                self.right += 1
+            self.Correct.configure(bg="#B9FF92")
+            self.lock = True
+ 
+ 
+ 
+class Menu:
+    def __init__(self):
+        clear()
+        self.Quiz = Button(window, text="THINQUIZZEE", font=("ALGERIAN", 15), command=quizCreator, width=15, height=3,bg = '#F4E3D1',activebackground = '#8EDBE3')
+        self.Quiz.grid(column=0,row=0,padx=206,pady=165)
+ 
+def menuCreator():
+    m = Menu()
+ 
+def quizCreator():
+    q = Quiz(questions)
+ 
+menuCreator()
+window.mainloop()
